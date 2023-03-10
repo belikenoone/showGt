@@ -7,13 +7,12 @@ const Search = () => {
   const [showMessage, setShowMessage] = useState(false);
   const { searchContent, searchResults, clearSearchResults ,darkMode} =
     useContext(AppContext);
-  const searchSectionRef = useRef(null)
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
     if(searchValue.length>0){
       searchContent(searchValue);
-      setSearchValue("");
-      searchSectionRef.current.scrollIntoView({behavior:"smooth"})
+      setSearchValue(""); 
     }
     else{
       setShowMessage(true)
@@ -21,13 +20,14 @@ const Search = () => {
         setShowMessage(false)
       }, 2000);
     }
-
+    window.scroll(0,window.innerHeight*1)
+    
   };
   return (
     <>
       <form className=" my-11 flex flex-col justify-center items-center" onSubmit={handleSubmit} >
       <h3 className={`text-2xl text-center py-4 ${darkMode?'text-whitish':'text-blackish'}`}>Search..</h3>
-        <div className="flex gap-3 justify-center">
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <input
             type="text"
             value={searchValue}
@@ -35,9 +35,9 @@ const Search = () => {
             className={`py-2 px-3 rounded-md outline ${darkMode?'outline-whitish':'outline-blackish'} `}
             placeholder="Search Here.."
           />
-          <button className={`${darkMode? 'bg-whitish text-smokey':'bg-smokey text-white'} px-2 rounded-lg`}>Search</button>
+          <button className={`${darkMode? 'bg-whitish text-smokey':'bg-smokey text-white'} px-2 rounded-lg py-2 sm:py-0`}>Search</button>
           {searchResults && searchResults.length > 0 && (
-            <button onClick={clearSearchResults} className={`${darkMode? 'bg-whitish text-smokey':'bg-smokey text-white'} px-2 rounded-lg`} >Clear</button>
+            <button onClick={clearSearchResults} className={`${darkMode? 'bg-whitish text-smokey':'bg-smokey text-white'} px-2 rounded-lg py-2 sm:py-0`} >Clear</button>
           )}
         </div>
         {showMessage && (
@@ -45,8 +45,8 @@ const Search = () => {
         )}
       </form>
       {searchResults  ? (
-        <div className="my-5 " id="search">
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 justify-items-center" ref={searchSectionRef}>
+        <div className="my-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 justify-items-center" >
             {searchResults.map((result) => (
               <SearchItem item={result} key={result.id}/>
             ))}
